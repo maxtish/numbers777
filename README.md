@@ -32,4 +32,4 @@ NumberSpeak ist eine mobile Anwendung, die mit React Native entwickelt wurde und
 
 ## Lizenz
 
-Diese Anwendung wird unter der MIT-Lizenz vertrieben. Weitere Informationen finden Sie in der Datei [LICENSE](LICENSE).
+Diese Anwendung wird unter der MIT-Lizenz vertrieben.
