@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Pressable, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 import {
   allNumberIncrement,
@@ -15,6 +15,9 @@ import { speakText } from '@app/services/speakText';
 import * as Progress from 'react-native-progress';
 import { CountdownTimer } from './CountdownTimer';
 import { ButtonGoBack } from './ButtonGoBack';
+import No from '@app/assets/no.png';
+import Yes from '@app/assets/yes.png';
+
 export const NumberSpeak: React.FC = () => {
   const state = useSelector((state: IState) => state.stateNumberSpeak);
   const [yes, setYes] = useState<boolean>();
@@ -121,7 +124,10 @@ export const NumberSpeak: React.FC = () => {
           </View>
           <View style={styles.containerCorrectNubmer}>
             {yes || no ? (
-              <Text style={yes ? styles.resultJa : styles.resultNein}>{nummberf}</Text>
+              <>
+                <Text style={yes ? styles.resultJa : styles.resultNein}>{nummberf}</Text>
+                {yes ? <Image style={styles.image} source={Yes} /> : <Image style={styles.image} source={No} />}
+              </>
             ) : (
               <Text style={styles.resultJa}> </Text>
             )}
@@ -150,6 +156,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  image: {
+    position: 'absolute',
+    left: '-30%',
+    top: -10,
+    width: 100,
+    height: 100,
   },
   StarthButton: {
     backgroundColor: '#2ecc71',
