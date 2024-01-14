@@ -42,7 +42,6 @@
     "@types/expo__vector-icons": "^10.0.0",
     "@types/react": "~18.2.14",
     "@types/react-dom": "~18.0.10",
-    "@types/react-native": "^0.73.0",
     "@types/uuid": "^9.0.5",
     "typescript": "^5.1.3"
   },
