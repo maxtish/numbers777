@@ -17,15 +17,70 @@ import { CountdownTimer } from './CountdownTimer';
 import { ButtonGoBack } from './ButtonGoBack';
 import No from '@app/assets/no.png';
 import Yes from '@app/assets/yes.png';
+import { Audio } from 'expo-av';
 
 export const NumberSpeak: React.FC = () => {
   const state = useSelector((state: IState) => state.stateNumberSpeak);
   const [yes, setYes] = useState<boolean>();
   const [no, setNo] = useState<boolean>();
-
   const [enteredNumbers, setEnteredNumbers] = useState('');
-
   const dispatch = useDispatch();
+
+  // Типизация для переменных yesSound и noSound
+  const [yesSound, setYesSound] = useState<Audio.Sound | undefined>(undefined);
+  const [noSound, setNoSound] = useState<Audio.Sound | undefined>(undefined);
+
+  useEffect(() => {
+    // Загрузка звуковых файлов при монтировании компонента
+    async function loadSounds() {
+      try {
+        const yesMp3: Audio.Sound = new Audio.Sound();
+        const noMp3: Audio.Sound = new Audio.Sound();
+
+        await yesMp3.loadAsync(require('@app/assets/mp3/yes.mp3'));
+        await noMp3.loadAsync(require('@app/assets/mp3/no.mp3'));
+
+        setYesSound(yesMp3);
+        setNoSound(noMp3);
+      } catch (error) {
+        console.error('Ошибка при загрузке звуковых файлов', error);
+      }
+    }
+
+    loadSounds();
+    return () => {
+      // Выгрузка звуковых файлов при размонтировании компонента
+      if (yesSound) {
+        yesSound.unloadAsync();
+      }
+      if (noSound) {
+        noSound.unloadAsync();
+      }
+    };
+  }, []);
+
+  const playYesSound = async () => {
+    // Воспроизведение звука "Да"
+    try {
+      if (yesSound) {
+        await yesSound.replayAsync();
+      }
+    } catch (error) {
+      console.error('Ошибка воспроизведения звука "Да"', error);
+    }
+  };
+
+  const playNoSound = async () => {
+    // Воспроизведение звука "Нет"
+    try {
+      if (noSound) {
+        await noSound.replayAsync();
+        await noSound.setVolumeAsync(0.3);
+      }
+    } catch (error) {
+      console.error('Ошибка воспроизведения звука "Нет"', error);
+    }
+  };
 
   useEffect(() => {
     if (correctNubmer === undefined) {
@@ -64,6 +119,7 @@ export const NumberSpeak: React.FC = () => {
 
     if (nummberf === enteredNumber) {
       console.log('ДА');
+      playYesSound();
       setYes(true);
 
       setTimeout(() => {
@@ -73,6 +129,7 @@ export const NumberSpeak: React.FC = () => {
       }, 1000);
     } else {
       console.log('НЕТ');
+      playNoSound();
       setNo(true);
       setTimeout(() => {
         //код, который должен выполниться после задержки
@@ -125,8 +182,10 @@ export const NumberSpeak: React.FC = () => {
           <View style={styles.containerCorrectNubmer}>
             {yes || no ? (
               <>
-                <Text style={yes ? styles.resultJa : styles.resultNein}>{nummberf}</Text>
-                {yes ? <Image style={styles.image} source={Yes} /> : <Image style={styles.image} source={No} />}
+                <Text style={yes ? styles.resultJa : styles.resultNein}>
+                  {yes ? <Image style={styles.image} source={Yes} /> : <Image style={styles.image} source={No} />}{' '}
+                  {nummberf}
+                </Text>
               </>
             ) : (
               <Text style={styles.resultJa}> </Text>
@@ -158,11 +217,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    position: 'absolute',
-    left: '-30%',
-    top: -10,
-    width: 100,
-    height: 100,
+    width: 50,
+    height: 50,
   },
   StarthButton: {
     backgroundColor: '#2ecc71',
