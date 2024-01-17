@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useBackHandler } from '@app/services/backHandler';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useDispatch } from 'react-redux';
-import { allNumberInitAndLanguage } from '../store/actions/actions';
+import { allNumberInit, allNumberInitAndLanguage, allNumbersResetCount } from '../store/actions/actions';
 import { useSelector } from 'react-redux';
 import { IState } from '../store/store';
+import { randomNumberArr } from '@app/services/randomNumberArr';
 
 const HomeScreen: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (allNumber[count] === undefined) {
+      dispatch(allNumberInit(randomNumberArr()));
+      dispatch(allNumbersResetCount());
+    }
+  }, []);
 
   useBackHandler();
   const [open, setOpen] = useState(false);
@@ -32,7 +40,7 @@ const HomeScreen: React.FC = () => {
     ru: 'Russian',
   };
 
-  const { language } = useSelector((state: IState) => state.stateNumberSpeak);
+  const { language, allNumber, count } = useSelector((state: IState) => state.stateNumberSpeak);
 
   const languageText = languageTextObj[language];
 

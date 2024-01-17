@@ -82,6 +82,7 @@ export const NumberSpeak: React.FC = () => {
     }
   };
 
+  ///эта проверка уже есть в HomeScreen
   useEffect(() => {
     if (correctNubmer === undefined) {
       console.log(correctNubmer);

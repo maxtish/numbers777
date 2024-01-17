@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: '#fff',
   },
 });
 AppRegistry.registerComponent('numbers777', () => App);
