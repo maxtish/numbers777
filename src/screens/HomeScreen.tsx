@@ -26,6 +26,16 @@ const HomeScreen: React.FC = () => {
     dispatch(allNumberInitAndLanguage(selectedValue));
   };
 
+  const languageTextObj = {
+    de: 'German',
+    en: 'English',
+    ru: 'Russian',
+  };
+
+  const { language } = useSelector((state: IState) => state.stateNumberSpeak);
+
+  const languageText = languageTextObj[language];
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -38,7 +48,7 @@ const HomeScreen: React.FC = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
-            placeholder={'select language'}
+            placeholder={languageText}
             onChangeValue={handleLanguageChange} // добавлен обработчик события
           />
         </View>

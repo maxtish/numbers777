@@ -90,15 +90,30 @@ export const NumberSpeak: React.FC = () => {
     }
   }, []);
 
+  const textObj = {
+    finish: {
+      ru: 'Отличная работа! Вы идеально освоили числа. Теперь важно сохранять мотивацию и продолжать учить новые слова!',
+      de: 'Sehr gut! Mit den Zahlen haben wir uns jetzt auseinandergesetzt. Jetzt bleibt nur noch, motiviert zu bleiben und weiterhin neue Wörter zu lernen!',
+      en: `Great job! You've mastered the numbers perfectly. Now, all that's left is to stay motivated and keep learning new words!`,
+    },
+    buttonReset: { ru: 'Начать заново', de: 'Von vorne anfangen', en: 'Start over' },
+    loading: { ru: 'Загрузка', de: 'Wird geladen', en: 'Loading' },
+    victory: { ru: 'Ты выиграл', de: 'Du hast gewonnen', en: 'You won' },
+    goBack: { ru: 'назад', de: 'zurück', en: 'back' },
+  };
+
   const correctNubmer = state.allNumber[state.count];
   const { language } = state;
-  const nummberf: string = correctNubmer !== undefined ? correctNubmer.toString() : 'Wird geladen';
+  const loadingText = textObj.loading[language];
+  const victoryText = textObj.victory[language];
+  const goBackText = textObj.goBack[language];
+  const nummberf: string = correctNubmer !== undefined ? correctNubmer.toString() : loadingText;
   console.log(correctNubmer);
   const [buttonPressed, setButtonPressed] = useState(false); // Add this line
 
   const speak = useMemo(() => {
     return speakText(
-      state.count === state.allNumber.length && state.allNumber[1] !== undefined ? 'Du hast gewonnen' : nummberf,
+      state.count === state.allNumber.length && state.allNumber[1] !== undefined ? victoryText : nummberf,
       (isSpoken) => {
         console.log('Текст произнесен:');
         setButtonPressed(isSpoken);
@@ -118,6 +133,7 @@ export const NumberSpeak: React.FC = () => {
     console.log(`Entered number: ${enteredNumber}`);
 
     if (nummberf === enteredNumber) {
+      setButtonPressed(false);
       console.log('ДА');
       playYesSound();
       setYes(true);
@@ -126,8 +142,10 @@ export const NumberSpeak: React.FC = () => {
         //код, который должен выполниться после задержки
         setYes(false);
         dispatch(allNumberIncrement());
+        setButtonPressed(true);
       }, 1000);
     } else {
+      setButtonPressed(false);
       console.log('НЕТ');
       playNoSound();
       setNo(true);
@@ -135,6 +153,7 @@ export const NumberSpeak: React.FC = () => {
         //код, который должен выполниться после задержки
         dispatch(allNumberInitAndDecrement(randomNumberArr()));
         setNo(false);
+        setButtonPressed(true);
       }, 3000);
     }
   };
@@ -143,21 +162,21 @@ export const NumberSpeak: React.FC = () => {
     console.log('Отсчет завершен!');
     handleFinishPress(enteredNumbers);
   };
+
+  const finishText = textObj.finish[language];
+  const resetButtonText = textObj.buttonReset[language];
   return (
     <View style={styles.container}>
       {state.count === state.allNumber.length ? (
         <>
-          <Text style={styles.textWin}>
-            Sehr gut! Mit den Zahlen haben wir uns jetzt auseinandergesetzt, jetzt bleibt noch, 6000 Wörter für das
-            Niveau C1 zu lernen.
-          </Text>
+          <Text style={styles.textWin}>{finishText}</Text>
           <Pressable
             style={styles.StarthButton}
             onPress={() => {
               dispatch(allNumberInit(randomNumberArr()));
             }}
           >
-            <Text>Начать заново</Text>
+            <Text>{resetButtonText}</Text>
           </Pressable>
         </>
       ) : (
@@ -170,7 +189,7 @@ export const NumberSpeak: React.FC = () => {
               height={20}
               borderRadius={50}
             />
-            <ButtonGoBack />
+            <ButtonGoBack text={goBackText} />
           </View>
           <View style={styles.containerCountdownTimer}>
             <CountdownTimer

@@ -4,7 +4,7 @@ import { ActionTypes } from '../actions/actions';
 export interface stateNumberSpeak {
   allNumber: number[];
   count: number;
-  language: string;
+  language: 'de' | 'en' | 'ru';
 }
 
 // Начальное состояние

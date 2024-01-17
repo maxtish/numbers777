@@ -24,13 +24,13 @@ export const randomNumberArr = (): number[] => {
   randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 0, 10, 5);
 
   // Генерация 20 случайных чисел от 10 до 100
-  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 10, 100, 20);
+  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 10, 100, 10);
 
   // Генерация 20 случайных чисел от 100 до 1000
-  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 100, 1000, 20);
+  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 100, 1000, 10);
 
   // Генерация 20 случайных чисел от 1000 до 1000000
-  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 1000, 1000000, 20);
+  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 1000, 1000000, 10);
 
   return randomNumbersArr;
 };
