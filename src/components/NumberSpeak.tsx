@@ -111,14 +111,12 @@ export const NumberSpeak: React.FC = () => {
   const goBackText = textObj.goBack[language];
   const nummberf: string = correctNubmer !== undefined ? correctNubmer.toString() : loadingText;
   console.log(correctNubmer);
-  const [buttonPressed, setButtonPressed] = useState(false); // Add this line
 
   const speak = useMemo(() => {
     return speakText(
       state.count === state.allNumber.length && state.allNumber[1] !== undefined ? victoryText : nummberf,
       (isSpoken) => {
         console.log('Текст произнесен:');
-        setButtonPressed(isSpoken);
       },
       language
     );
@@ -129,7 +127,6 @@ export const NumberSpeak: React.FC = () => {
     console.log(number);
     setEnteredNumbers(number);
     if (nummberf === number) {
-      setButtonPressed(false);
       console.log('ДА');
       playYesSound();
       setYes(true);
@@ -138,7 +135,6 @@ export const NumberSpeak: React.FC = () => {
         setEnteredNumbers('');
         setYes(false);
         dispatch(allNumberIncrement());
-        setButtonPressed(true);
       }, 1000);
     } else {
     }
@@ -147,7 +143,6 @@ export const NumberSpeak: React.FC = () => {
   const handleStopCountdown = () => {
     // Обработка события "стоп отсчет" здесь
     console.log('Отсчет завершен!');
-    setButtonPressed(false);
     console.log('НЕТ');
     playNoSound();
     setNo(true);
@@ -155,7 +150,6 @@ export const NumberSpeak: React.FC = () => {
       //код, который должен выполниться после задержки
       dispatch(allNumberInitAndDecrement(randomNumberArr()));
       setNo(false);
-      setButtonPressed(true);
     }, 3000);
   };
 
@@ -221,10 +215,7 @@ export const NumberSpeak: React.FC = () => {
           </View>
 
           <View style={styles.containerKeyboard}>
-            <CustomNumericKeyboard
-              onNumberPress={handleNumberPress}
-              isTextSpoken={buttonPressed}
-            ></CustomNumericKeyboard>
+            <CustomNumericKeyboard onNumberPress={handleNumberPress}></CustomNumericKeyboard>
           </View>
         </>
       )}

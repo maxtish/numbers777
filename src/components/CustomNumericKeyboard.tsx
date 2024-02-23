@@ -5,13 +5,12 @@ import { useSelector } from 'react-redux';
 
 interface CustomNumericKeyboardProps {
   onNumberPress?: (number: string) => void;
-  isTextSpoken?: boolean;
   onNumberChange?: (enteredNumber: string) => void;
 }
 
-export const CustomNumericKeyboard: FC<CustomNumericKeyboardProps> = ({ onNumberPress, isTextSpoken }) => {
+export const CustomNumericKeyboard: FC<CustomNumericKeyboardProps> = ({ onNumberPress }) => {
   const [enteredNumber, setEnteredNumber] = useState('');
-  console.log('isTextSpoken', isTextSpoken);
+
   const handleNumberPress = (number: string) => {
     Vibration.vibrate([0, 20]); //  (пауза после клика, время вибраци, )
     setEnteredNumber(enteredNumber + number);
