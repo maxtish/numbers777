@@ -1,20 +1,15 @@
 import React, { useState, FC, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Vibration } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Vibration } from 'react-native';
 import { IState } from '../store/store';
 import { useSelector } from 'react-redux';
 
 interface CustomNumericKeyboardProps {
   onNumberPress?: (number: string) => void;
-  onFinishPress?: (enteredNumber: string) => void;
   isTextSpoken?: boolean;
   onNumberChange?: (enteredNumber: string) => void;
 }
 
-export const CustomNumericKeyboard: FC<CustomNumericKeyboardProps> = ({
-  onNumberPress,
-  onFinishPress,
-  isTextSpoken,
-}) => {
+export const CustomNumericKeyboard: FC<CustomNumericKeyboardProps> = ({ onNumberPress, isTextSpoken }) => {
   const [enteredNumber, setEnteredNumber] = useState('');
   console.log('isTextSpoken', isTextSpoken);
   const handleNumberPress = (number: string) => {
@@ -33,12 +28,7 @@ export const CustomNumericKeyboard: FC<CustomNumericKeyboardProps> = ({
     Vibration.vibrate([0, 20]);
     const stringWithoutLastCharacter = enteredNumber.slice(0, -1);
     setEnteredNumber(stringWithoutLastCharacter);
-  };
-
-  const handleFinishPress = () => {
-    Vibration.vibrate([0, 20]);
-    onFinishPress && onFinishPress(enteredNumber);
-    setEnteredNumber('');
+    onNumberPress && onNumberPress(stringWithoutLastCharacter);
   };
 
   return (
@@ -46,7 +36,9 @@ export const CustomNumericKeyboard: FC<CustomNumericKeyboardProps> = ({
       <View style={styles.containerNumber}>
         <Text style={styles.textNumber}>{enteredNumber}</Text>
         <Pressable
-          onPress={() => handleNumberDel()}
+          onPress={() => {
+            handleNumberDel();
+          }}
           style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
         >
           <Text style={styles.buttonTextDel}> &lt;-- </Text>
@@ -123,20 +115,6 @@ export const CustomNumericKeyboard: FC<CustomNumericKeyboardProps> = ({
             </Pressable>
           </View>
         </View>
-
-        <Pressable
-          onPress={handleFinishPress}
-          disabled={!isTextSpoken}
-          style={({ pressed }) => [
-            styles.finishButton,
-            { height: '90%', width: '20%', justifyContent: 'center', alignItems: 'center' },
-            pressed && styles.buttonPressed,
-            !isTextSpoken && styles.finishButtonDisabled,
-            { flexDirection: 'column' }, // Set column direction
-          ]}
-        >
-          <Text style={[styles.buttonText]}> {'\u23CE'}</Text>
-        </Pressable>
       </View>
     </View>
   );

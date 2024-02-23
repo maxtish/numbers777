@@ -133,9 +133,9 @@ export const NumberSpeak: React.FC = () => {
       console.log('ДА');
       playYesSound();
       setYes(true);
-
       setTimeout(() => {
         //код, который должен выполниться после задержки
+        setEnteredNumbers('');
         setYes(false);
         dispatch(allNumberIncrement());
         setButtonPressed(true);
@@ -144,39 +144,19 @@ export const NumberSpeak: React.FC = () => {
     }
   };
 
-  const handleFinishPress = (enteredNumber: string) => {
-    // Обработка введенного числа при нажатии "Готово"
-    console.log(`Entered number: ${enteredNumber}`);
-
-    if (nummberf === enteredNumber) {
-      setButtonPressed(false);
-      console.log('ДА');
-      playYesSound();
-      setYes(true);
-
-      setTimeout(() => {
-        //код, который должен выполниться после задержки
-        setYes(false);
-        dispatch(allNumberIncrement());
-        setButtonPressed(true);
-      }, 1000);
-    } else {
-      setButtonPressed(false);
-      console.log('НЕТ');
-      playNoSound();
-      setNo(true);
-      setTimeout(() => {
-        //код, который должен выполниться после задержки
-        dispatch(allNumberInitAndDecrement(randomNumberArr()));
-        setNo(false);
-        setButtonPressed(true);
-      }, 3000);
-    }
-  };
   const handleStopCountdown = () => {
     // Обработка события "стоп отсчет" здесь
     console.log('Отсчет завершен!');
-    handleFinishPress(enteredNumbers);
+    setButtonPressed(false);
+    console.log('НЕТ');
+    playNoSound();
+    setNo(true);
+    setTimeout(() => {
+      //код, который должен выполниться после задержки
+      dispatch(allNumberInitAndDecrement(randomNumberArr()));
+      setNo(false);
+      setButtonPressed(true);
+    }, 3000);
   };
 
   const finishText = textObj.finish[language];
@@ -239,10 +219,10 @@ export const NumberSpeak: React.FC = () => {
               <Text style={styles.resultJa}> </Text>
             )}
           </View>
+
           <View style={styles.containerKeyboard}>
             <CustomNumericKeyboard
               onNumberPress={handleNumberPress}
-              onFinishPress={handleFinishPress}
               isTextSpoken={buttonPressed}
             ></CustomNumericKeyboard>
           </View>
