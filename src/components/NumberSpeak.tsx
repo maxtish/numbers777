@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { View, StyleSheet, Text, Pressable, Image } from 'react-native';
+import { View, StyleSheet, Text, Pressable, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import {
   allNumberIncrement,
@@ -17,6 +17,7 @@ import { CountdownTimer } from './CountdownTimer';
 import { ButtonGoBack } from './ButtonGoBack';
 import No from '@app/assets/no.png';
 import Yes from '@app/assets/yes.png';
+import ReplayAudio from '@app/assets/replay-audio.png';
 import { Audio } from 'expo-av';
 
 export const NumberSpeak: React.FC = () => {
@@ -127,6 +128,20 @@ export const NumberSpeak: React.FC = () => {
     // Обработка введенной цифры
     console.log(number);
     setEnteredNumbers(number);
+    if (nummberf === number) {
+      setButtonPressed(false);
+      console.log('ДА');
+      playYesSound();
+      setYes(true);
+
+      setTimeout(() => {
+        //код, который должен выполниться после задержки
+        setYes(false);
+        dispatch(allNumberIncrement());
+        setButtonPressed(true);
+      }, 1000);
+    } else {
+    }
   };
 
   const handleFinishPress = (enteredNumber: string) => {
@@ -198,6 +213,19 @@ export const NumberSpeak: React.FC = () => {
               duration={state.count < 5 ? 10 : state.count < 25 ? 15 : state.count < 45 ? 30 : 40}
               onStop={handleStopCountdown}
             ></CountdownTimer>
+            <TouchableOpacity
+              onPress={() =>
+                speakText(
+                  state.count === state.allNumber.length && state.allNumber[1] !== undefined ? victoryText : nummberf,
+                  (isSpoken) => {
+                    console.log('Текст произнесен:');
+                  },
+                  language
+                )
+              }
+            >
+              <Image style={styles.imageReplayAudio} source={ReplayAudio}></Image>
+            </TouchableOpacity>
           </View>
           <View style={styles.containerCorrectNubmer}>
             {yes || no ? (
@@ -240,6 +268,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  imageReplayAudio: {
+    width: 90,
+    height: 90,
+  },
   StarthButton: {
     backgroundColor: '#2ecc71',
     padding: 15,
@@ -257,7 +289,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  containerCountdownTimer: {},
+  containerCountdownTimer: {
+    width: '80%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   progress: {
     marginVertical: 20,
   },
