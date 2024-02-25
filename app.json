@@ -2,7 +2,10 @@
   "expo": {
     "name": "numbers777",
     "slug": "numbers777",
-    "version": "1.0.0",
+    "version": "2.0.1",
+    "privacy": {
+      "privacyPolicy": "./privacy_policy.txt"
+    },
     "orientation": "portrait",
     "icon": "./assets/ico-app.png",
     "userInterfaceStyle": "light",
@@ -16,6 +19,7 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
