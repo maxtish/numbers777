@@ -23,14 +23,20 @@ export const randomNumberArr = (): number[] => {
   // Генерация 5 случайных чисел от 0 до 10
   randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 0, 10, 5);
 
-  // Генерация 20 случайных чисел от 10 до 100
+  // Генерация 10 случайных чисел от 10 до 100
   randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 10, 100, 10);
 
-  // Генерация 20 случайных чисел от 100 до 1000
+  // Генерация 10 случайных чисел от 100 до 1000
   randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 100, 1000, 10);
 
-  // Генерация 20 случайных чисел от 1000 до 1000000
-  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 1000, 1000000, 10);
+  // Генерация 10 случайных чисел от 1000 до 10 000
+  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 1000, 10000, 10);
+
+  // Генерация 10 случайных чисел от 10 000 до 100 000
+  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 10000, 100000, 10);
+
+  // Генерация 10 случайных чисел от 100 000 до 1000 000
+  randomNumbersArr = generateNumbersInInterval(randomNumbersArr, 100000, 1000000, 10);
 
   return randomNumbersArr;
 };
