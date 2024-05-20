@@ -4,6 +4,9 @@ type SpeakCallback = (isSpoken: boolean) => void;
 
 export const speakText = async (text: string, callback: SpeakCallback, language: string): Promise<void> => {
   try {
+    if (language == 'ja') {
+      language = 'ja-JP';
+    }
     await Speech.speak(text, {
       language: language, //
       onDone: () => {

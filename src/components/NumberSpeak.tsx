@@ -97,11 +97,12 @@ export const NumberSpeak: React.FC = () => {
       ru: 'Отличная работа! Вы идеально освоили числа. Теперь важно сохранять мотивацию и продолжать учить новые слова!',
       de: 'Sehr gut! Mit den Zahlen haben wir uns jetzt auseinandergesetzt. Jetzt bleibt nur noch, motiviert zu bleiben und weiterhin neue Wörter zu lernen!',
       en: `Great job! You've mastered the numbers perfectly. Now, all that's left is to stay motivated and keep learning new words!`,
+      ja: '「素晴らしい仕事ですね！数字を完璧にマスターしました。今後はモチベーションを維持し、新しい単語を学び続けることが重要です！',
     },
-    buttonReset: { ru: 'Начать заново', de: 'Von vorne anfangen', en: 'Start over' },
-    loading: { ru: 'Загрузка', de: 'Wird geladen', en: 'Loading' },
-    victory: { ru: 'Ты выиграл', de: 'Du hast gewonnen', en: 'You won' },
-    goBack: { ru: 'назад', de: 'zurück', en: 'back' },
+    buttonReset: { ru: 'Начать заново', de: 'Von vorne anfangen', en: 'Start over', ja: '最初から始める' },
+    loading: { ru: 'Загрузка', de: 'Wird geladen', en: 'Loading', ja: 'ダウンロード' },
+    victory: { ru: 'Ты выиграл', de: 'Du hast gewonnen', en: 'You won', ja: 'あなたが勝ちました' },
+    goBack: { ru: 'назад', de: 'zurück', en: 'back', ja: '戻るボタン' },
   };
 
   const correctNubmer = state.allNumber[state.count];

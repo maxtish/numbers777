@@ -27,7 +27,8 @@ const HomeScreen: React.FC = () => {
   const [items, setItems] = useState([
     { label: 'German', value: 'de' },
     { label: 'English', value: 'en' },
-    { label: 'Russian', value: 'ru' },
+    { label: 'Russian', value: 'ru' }, //
+    { label: 'Japanese', value: 'ja' },
   ]);
 
   const handleLanguageChange = (selectedValue: any) => {
@@ -38,6 +39,7 @@ const HomeScreen: React.FC = () => {
     de: 'German',
     en: 'English',
     ru: 'Russian',
+    ja: 'Japanese',
   };
 
   const { language, allNumber, count } = useSelector((state: IState) => state.stateNumberSpeak);
