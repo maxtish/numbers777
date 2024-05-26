@@ -64,7 +64,10 @@ const HomeScreen: React.FC = () => {
         </View>
 
         <Pressable style={styles.buttonsNavi} onPress={() => navigate('/numbersScreen')}>
-          <Text style={styles.buttonsText}>Start</Text>
+          <Text style={styles.buttonsText}>Start number</Text>
+        </Pressable>
+        <Pressable style={styles.buttonsNavi} onPress={() => navigate('/wörter')}>
+          <Text style={styles.buttonsText}>Wörter</Text>
         </Pressable>
       </View>
     </TouchableWithoutFeedback>

@@ -5,6 +5,7 @@ import { store } from './src/store/store';
 import { NativeRouter, Route, Routes } from 'react-router-native';
 import HomeScreen from './src/screens/HomeScreen';
 import NumberSpeakScreen from './src/screens/NumberSpeakScreen';
+import WörterScreen from './src/screens/WörterScreen';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Routes>
             <Route path="/" Component={HomeScreen} />
             <Route path="/numbersScreen" Component={NumberSpeakScreen} />
+            <Route path="/wörter" Component={WörterScreen} />
           </Routes>
         </NativeRouter>
       </View>

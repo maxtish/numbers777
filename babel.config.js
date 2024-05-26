@@ -4,6 +4,7 @@ module.exports = function (api) {
     presets: [
       ['@babel/preset-env', { loose: true }],
       ['@babel/preset-react', { runtime: 'automatic' }],
+      ['module:metro-react-native-babel-preset'],
       '@babel/preset-typescript',
       'babel-preset-expo',
     ],
@@ -16,6 +17,7 @@ module.exports = function (api) {
           },
         },
       ],
+      ['react-native-reanimated/plugin'],
     ],
   };
 };
