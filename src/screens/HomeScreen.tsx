@@ -66,7 +66,7 @@ const HomeScreen: React.FC = () => {
         <Pressable style={styles.buttonsNavi} onPress={() => navigate('/numbersScreen')}>
           <Text style={styles.buttonsText}>Start number</Text>
         </Pressable>
-        <Pressable style={styles.buttonsNavi} onPress={() => navigate('/wörter')}>
+        <Pressable style={styles.buttonsNavi} onPress={() => navigate('/word')}>
           <Text style={styles.buttonsText}>Wörter</Text>
         </Pressable>
       </View>

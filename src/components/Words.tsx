@@ -27,6 +27,12 @@ const a1WordWZ: IWord[] = [
 const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
   const rotateValues = word.de.split('').map(() => useSharedValue(0));
   const [flipped, setFlipped] = useState<boolean[]>(new Array(word.de.length).fill(false));
+  //преобразования слова в массив букв
+  const convertWordToArray = (word: string): string[] => {
+    return word.split('');
+  };
+  const letterArray = convertWordToArray(word.de);
+  console.log(letterArray);
 
   const flipCard = (index: number) => {
     const rotate = rotateValues[index];
@@ -43,6 +49,7 @@ const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
   return (
     <View style={styles.wordContainer}>
       <Text style={styles.translation}>{word.rus}</Text>
+
       <View style={styles.lettersContainer}>
         {word.de.split('').map((letter, index) => {
           const rotate = rotateValues[index];
@@ -78,11 +85,19 @@ const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
           );
         })}
       </View>
+      <View>
+        <Text>Word to Array of Letters</Text>
+        {letterArray.map((letter, index) => (
+          <TouchableOpacity key={index} onPress={() => flipCard(index)}>
+            {letter}
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 };
 
-export const Wörter: React.FC = () => {
+export const Words: React.FC = () => {
   const [currentWord] = useState<IWord>(a1WordWZ[0]);
 
   return (
