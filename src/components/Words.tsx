@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Animated, { Easing, useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-
-interface IWord {
-  de: string;
-  rus: string;
-}
+import { useSelector } from 'react-redux';
+import { IState } from '../store/store';
+import { useDispatch } from 'react-redux';
+import { initWords } from '../store/actions/actions';
+import { IWord } from '../store/reducers/words';
 
 const a1WordWZ: IWord[] = [
   { de: 'wann', rus: 'когда' },
@@ -25,14 +25,16 @@ const a1WordWZ: IWord[] = [
 ];
 
 const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
+  const stateWords = useSelector((state: IState) => state.stateWords);
+
   const rotateValues = word.de.split('').map(() => useSharedValue(0));
   const [flipped, setFlipped] = useState<boolean[]>(new Array(word.de.length).fill(false));
+
   //преобразования слова в массив букв
   const convertWordToArray = (word: string): string[] => {
     return word.split('');
   };
   const letterArray = convertWordToArray(word.de);
-  console.log(letterArray);
 
   const flipCard = (index: number) => {
     const rotate = rotateValues[index];
@@ -98,13 +100,26 @@ const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
 };
 
 export const Words: React.FC = () => {
-  const [currentWord] = useState<IWord>(a1WordWZ[0]);
+  const stateWords = useSelector((state: IState) => state.stateWords);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(initWords(a1WordWZ));
+  }, []);
 
-  return (
-    <View style={styles.container}>
-      <WordDisplay word={currentWord} />
-    </View>
-  );
+  const currentWord: IWord = stateWords.words[stateWords.count];
+  console.log('TEST ', stateWords.words[stateWords.count]);
+  if (stateWords.words.length > 1)
+    return (
+      <View style={styles.container}>
+        <WordDisplay word={currentWord} />
+      </View>
+    );
+  else
+    return (
+      <View style={styles.container}>
+        <Text>Нет данных</Text>
+      </View>
+    );
 };
 
 const styles = StyleSheet.create({

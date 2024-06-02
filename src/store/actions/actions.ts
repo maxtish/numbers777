@@ -1,5 +1,7 @@
 // actions.ts
 
+import { IWord } from '../reducers/words';
+
 /// numberSpeakReducer
 export const allNumberInit = (allNumber: number[]) => ({
   type: 'ALL_NUMBER_INIT' as const,
@@ -26,7 +28,7 @@ export const allNumberInitAndLanguage = (language: string) => ({
   language,
 });
 ///WORDS
-export const initWords = (words: string[]) => ({
+export const initWords = (words: IWord[]) => ({
   type: 'INIT_WORDS' as const,
   words,
 });

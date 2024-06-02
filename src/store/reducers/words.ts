@@ -1,17 +1,24 @@
 // reducers/count.ts
 import { ActionTypes } from '../actions/actions';
 
+export interface IWord {
+  de: string;
+  rus: string;
+}
+
 export interface stateWords {
-  words: string[];
+  words: IWord[];
   wordArr: string[];
   count: number;
+  totalScore: number;
 }
 
 // Начальное состояние
 const initialState: stateWords = {
-  words: [''],
+  words: [],
   wordArr: [''],
   count: 0,
+  totalScore: 0,
 };
 
 const wordsReducer = (state: stateWords = initialState, action: ActionTypes) => {
