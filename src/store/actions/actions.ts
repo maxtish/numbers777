@@ -25,6 +25,11 @@ export const allNumberInitAndLanguage = (language: string) => ({
   type: 'ALL_NUMBER_INIT_LANGUAGE' as const,
   language,
 });
+///WORDS
+export const initWords = (words: string[]) => ({
+  type: 'INIT_WORDS' as const,
+  words,
+});
 
 export type ActionTypes = ReturnType<
   | typeof allNumberInit
@@ -33,4 +38,5 @@ export type ActionTypes = ReturnType<
   | typeof allNumbersResetCount
   | typeof allNumberInitAndDecrement
   | typeof allNumberInitAndLanguage
+  | typeof initWords
 >;
