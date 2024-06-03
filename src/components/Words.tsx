@@ -1,125 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Animated, { Easing, useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { useSelector } from 'react-redux';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '../store/store';
-import { useDispatch } from 'react-redux';
 import { initWords } from '../store/actions/actions';
 import { IWord } from '../store/reducers/words';
-
-const a1WordWZ: IWord[] = [
-  { de: 'wann', rus: 'когда' },
-  { de: 'warten', rus: 'ждать' },
-  { de: 'warum', rus: 'почему' },
-  { de: 'was', rus: 'что' },
-  { de: 'das Wasser', rus: 'вода' },
-  { de: 'weiblich', rus: 'женский' },
-  { de: 'der Wein', rus: 'вино' },
-  { de: 'weit', rus: 'далеко' },
-  { de: 'weiter', rus: 'дальше' },
-  { de: 'welch-', rus: 'какой' },
-  { de: 'die Welt', rus: 'мир' },
-  { de: 'wenig', rus: 'мало' },
-  { de: 'wer', rus: 'кто' },
-  { de: 'werden', rus: 'стать, становиться' },
-];
-
-const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
-  const stateWords = useSelector((state: IState) => state.stateWords);
-
-  const rotateValues = word.de.split('').map(() => useSharedValue(0));
-  const [flipped, setFlipped] = useState<boolean[]>(new Array(word.de.length).fill(false));
-
-  //преобразования слова в массив букв
-  const convertWordToArray = (word: string): string[] => {
-    return word.split('');
-  };
-  const letterArray = convertWordToArray(word.de);
-
-  const flipCard = (index: number) => {
-    const rotate = rotateValues[index];
-    const isFlipped = flipped[index];
-
-    rotate.value = withTiming(isFlipped ? 0 : 180, {
-      duration: 800,
-      easing: Easing.out(Easing.cubic),
-    });
-
-    setFlipped(flipped.map((flip, i) => (i === index ? !flip : flip)));
-  };
-
-  return (
-    <View style={styles.wordContainer}>
-      <Text style={styles.translation}>{word.rus}</Text>
-
-      <View style={styles.lettersContainer}>
-        {word.de.split('').map((letter, index) => {
-          const rotate = rotateValues[index];
-          const frontAnimatedStyle = useAnimatedStyle(() => ({
-            transform: [
-              {
-                rotateY: `${rotate.value}deg`,
-              },
-            ],
-            backfaceVisibility: 'hidden',
-          }));
-
-          const backAnimatedStyle = useAnimatedStyle(() => ({
-            transform: [
-              {
-                rotateY: `${rotate.value + 180}deg`,
-              },
-            ],
-            backfaceVisibility: 'hidden',
-          }));
-
-          return (
-            <TouchableOpacity key={index} onPress={() => flipCard(index)}>
-              <View style={styles.flipContainer}>
-                <Animated.View style={[styles.hiddenLetter, frontAnimatedStyle]}>
-                  <Text style={styles.letter}> </Text>
-                </Animated.View>
-                <Animated.View style={[styles.visibleLetter, backAnimatedStyle]}>
-                  <Text style={styles.letter}>{letter}</Text>
-                </Animated.View>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-      <View>
-        <Text>Word to Array of Letters</Text>
-        {letterArray.map((letter, index) => (
-          <TouchableOpacity key={index} onPress={() => flipCard(index)}>
-            {letter}
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View>
-  );
-};
+import { WordDisplay } from './wordDisplay';
 
 export const Words: React.FC = () => {
-  const stateWords = useSelector((state: IState) => state.stateWords);
-  const dispatch = useDispatch();
+  const a1WordWZ: IWord[] = [
+    { de: 'wann', rus: 'когда' },
+    { de: 'warten', rus: 'ждать' },
+    { de: 'warum', rus: 'почему' },
+    { de: 'was', rus: 'что' },
+    { de: 'das Wasser', rus: 'вода' },
+    { de: 'weiblich', rus: 'женский' },
+    { de: 'der Wein', rus: 'вино' },
+    { de: 'weit', rus: 'далеко' },
+    { de: 'weiter', rus: 'дальше' },
+    { de: 'welch-', rus: 'какой' },
+    { de: 'die Welt', rus: 'мир' },
+    { de: 'wenig', rus: 'мало' },
+    { de: 'wer', rus: 'кто' },
+    { de: 'werden', rus: 'стать, становиться' },
+  ];
+
   useEffect(() => {
     dispatch(initWords(a1WordWZ));
   }, []);
 
-  const currentWord: IWord = stateWords.words[stateWords.count];
-  console.log('TEST ', stateWords.words[stateWords.count]);
-  if (stateWords.words.length > 1)
+  const stateWords = useSelector((state: IState) => state.stateWords);
+  const dispatch = useDispatch();
+
+  const currentWord: IWord | undefined = stateWords.words[stateWords.count];
+
+  if (currentWord) {
     return (
       <View style={styles.container}>
         <WordDisplay word={currentWord} />
       </View>
     );
-  else
+  } else {
     return (
       <View style={styles.container}>
         <Text>Нет данных</Text>
       </View>
     );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -128,45 +55,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-  },
-  wordContainer: {
-    alignItems: 'center',
-  },
-  translation: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  lettersContainer: {
-    flexDirection: 'row',
-  },
-  flipContainer: {
-    width: 50,
-    height: 50,
-    margin: 5,
-    position: 'relative',
-  },
-  hiddenLetter: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'blue',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  visibleLetter: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  letter: {
-    fontSize: 30,
-    color: 'black',
   },
 });
