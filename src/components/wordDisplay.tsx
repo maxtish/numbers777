@@ -8,16 +8,27 @@ import { IWord } from '../store/reducers/words';
 
 export const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
   const [text, setText] = useState<string>('');
+  const [currentIndex, setCurrentIndex] = useState<number>(0); // Индекс текущей буквы
 
-  // Инициализация хуков useSharedValue на верхнем уровне
-  const rotations = word.de.split('').reduce((acc, letter) => {
-    acc[letter] = useSharedValue(0);
-    return acc;
-  }, {} as { [key: string]: Animated.SharedValue<number> });
+  // Инициализация массива хуков useSharedValue на верхнем уровне
+  const rotations = word.de.split('').map(() => useSharedValue(0));
 
-  const flipCard = (letter: string) => {
-    const rotate = rotations[letter];
+  const flipCard = (index: number) => {
+    const rotate = rotations[index];
     rotate.value = withTiming(rotate.value === 0 ? 180 : 0, { duration: 300 });
+  };
+
+  const handleTextChange = (inputText: string) => {
+    const currentLetter = word.de[currentIndex];
+    const inputLetter = inputText[inputText.length - 1];
+
+    if (inputLetter === currentLetter) {
+      flipCard(currentIndex);
+      setCurrentIndex(currentIndex + 1);
+      setText(inputText);
+    } else {
+      console.log('Ошибка: Неправильная буква');
+    }
   };
 
   return (
@@ -26,7 +37,7 @@ export const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
 
       <View style={styles.lettersContainer}>
         {word.de.split('').map((letter, index) => {
-          const rotate = rotations[letter];
+          const rotate = rotations[index];
           const frontAnimatedStyle = useAnimatedStyle(() => ({
             transform: [
               {
@@ -46,7 +57,7 @@ export const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
           }));
 
           return (
-            <TouchableOpacity key={index} onPress={() => flipCard(letter)}>
+            <TouchableOpacity key={index} onPress={() => flipCard(index)}>
               <View style={styles.flipContainer}>
                 <Animated.View style={[styles.hiddenLetter, frontAnimatedStyle]}>
                   <Text style={styles.letter}> </Text>
@@ -59,9 +70,10 @@ export const WordDisplay: React.FC<{ word: IWord }> = ({ word }) => {
           );
         })}
       </View>
+
       <View>
-        <Text>Word to Array of Letters</Text>
-        <TextInput style={styles.input} onChangeText={setText} value={text} placeholder="Введите что-нибудь" />
+        <Text>TextInput</Text>
+        <TextInput style={styles.input} onChangeText={handleTextChange} value={text} placeholder="Введите что-нибудь" />
       </View>
     </View>
   );
